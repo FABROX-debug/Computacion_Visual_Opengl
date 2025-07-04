@@ -1,7 +1,4 @@
-markdown
-# 🧠 FaceMesh 3D con OpenGL
 
-Este proyecto implementa un sistema de **detección facial en 3D en tiempo real** utilizando **MediaPipe FaceMesh** y visualización con **OpenGL**. La detección se realiza con una webcam, y los puntos clave del rostro son renderizados en una malla 3D con iluminación básica.
 
 ---
 
@@ -82,9 +79,4 @@ python main.py mesh
 Estudiante de Ingeniería de Software - UNMSM
 GitHub: [FABROX-debug](FABROX-debug)
 
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT.
 
