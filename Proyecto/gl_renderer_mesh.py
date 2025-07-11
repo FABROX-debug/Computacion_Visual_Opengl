@@ -12,6 +12,12 @@ cap = cv2.VideoCapture(0)
 verts, normals = [], []
 MAX_TRI_IDX = max(TRIANGLES_FLAT)      # 477 (incluye iris)
 
+# escala global del modelo (ajustable con +/-)
+SCALE = 3.0
+
+# rotaciones controladas por el usuario
+rot_x, rot_y = 0.0, 0.0
+
 # ---------- normales seguras ----------
 def calc_normals(v):
     n = [np.zeros(3, np.float32) for _ in v]
@@ -36,13 +42,16 @@ def process(raw):
     a[:,1] = (.5 - a[:,1])*2
     a[:,2] =  a[:,2]*2
     a[:,0]-=a[:,0].mean(); a[:,1]-=a[:,1].mean(); a[:,2]-=a[:,2].mean()
-    a[:,:2]*=2.5; a[:,2]*=2.0
+    # aplicar escala global
+    a[:,:2]*=SCALE; a[:,2]*=SCALE
     return a.tolist()
 
 # ---------- render ----------
 def draw():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity(); gluLookAt(0,0,8, 0,0,0, 0,1,0)
+    glRotatef(rot_x, 1,0,0)
+    glRotatef(rot_y, 0,1,0)
 
     if verts:
         # relleno
@@ -91,6 +100,26 @@ def tick(_=0):
     glutPostRedisplay()
     glutTimerFunc(16, tick, 0)
 
+# ---------- controles ----------
+def special_keys(key, x, y):
+    global rot_x, rot_y
+    step = 5
+    if key == GLUT_KEY_LEFT:
+        rot_y -= step
+    elif key == GLUT_KEY_RIGHT:
+        rot_y += step
+    elif key == GLUT_KEY_UP:
+        rot_x -= step
+    elif key == GLUT_KEY_DOWN:
+        rot_x += step
+
+def keyboard(key, x, y):
+    global SCALE
+    if key == b'+':
+        SCALE *= 1.1
+    elif key == b'-':
+        SCALE /= 1.1
+
 # ---------- init ----------
 def iniciar_opengl():
     glutInit()
@@ -108,6 +137,8 @@ def iniciar_opengl():
     glMatrixMode(GL_MODELVIEW)
 
     glutDisplayFunc(draw)
+    glutSpecialFunc(special_keys)
+    glutKeyboardFunc(keyboard)
     tick()
     glutMainLoop()
 

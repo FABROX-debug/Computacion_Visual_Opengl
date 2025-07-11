@@ -60,6 +60,7 @@ python main.py mesh
 ✔ Convierte los puntos a coordenadas 3D para **OpenGL**
 ✔ Renderiza una malla facial 3D con iluminación, normales y líneas
 ✔ Usa triangulación para visualizar el rostro como una superficie en 3D
+✔ Permite rotar y hacer zoom con el teclado
 
 ---
 
