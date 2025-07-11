@@ -77,6 +77,7 @@ def tick(_=0):
         return
 
     cv2.imshow("Camara (FaceMesh)", frame)
+    cv2.waitKey(1)
     raw = get_facemesh(frame)
 
     if raw and len(raw) >= 468:              # acepta 468 (sin iris) o 478
